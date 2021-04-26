@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -14,14 +15,21 @@ namespace DataAccess101
         {
             using (SqlConnection con = new SqlConnection())
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "Select * from table";
-                cmd.CommandType = System.Data.CommandType.Text;
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
+                con.ConnectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString;
+                using (SqlCommand cmd = new SqlCommand())
                 {
-                    
+                    cmd.Connection = con;
+                    cmd.CommandText = "Select * from HumanResources.Department";
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    con.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            TextBox1.Text = TextBox1.Text + reader.GetValue(0);
+                            TextBox2.Text = TextBox2.Text + reader.GetValue(1);
+                        }
+                    }
                 }
             }
         }
