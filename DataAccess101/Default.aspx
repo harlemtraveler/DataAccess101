@@ -29,7 +29,28 @@
             </p>
         </div>
         <div class="col-md-4">
-            <h2>Web Hosting</h2>
+            <h2>Web Hosting<asp:GridView ID="GridView1" runat="server" DataSourceID="SqlDataSource1" AllowPaging="True" AllowSorting="True">
+                <Columns>
+                    <asp:CommandField ShowDeleteButton="True" ShowEditButton="True" ShowSelectButton="True" />
+                </Columns>
+                </asp:GridView>
+                <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:AdventureWorks2019ConnectionString %>" OldValuesParameterFormatString="original_{0}" SelectCommand="SELECT * FROM HumanResources.[Department]" DeleteCommand="DELETE FROM HumanResources.[Department] WHERE [DepartmentID] = @original_DepartmentID" InsertCommand="INSERT INTO HumanResources.[Department] ([Name], [GroupName], [ModifiedDate]) VALUES (@Name, @GroupName, @ModifiedDate)" UpdateCommand="UPDATE HumanResources.[Department] SET [Name] = @Name, [GroupName] = @GroupName, [ModifiedDate] = @ModifiedDate WHERE [DepartmentID] = @original_DepartmentID">
+                    <DeleteParameters>
+                        <asp:Parameter Name="original_DepartmentID" Type="Int16" />
+                    </DeleteParameters>
+                    <InsertParameters>
+                        <asp:Parameter Name="Name" Type="String" />
+                        <asp:Parameter Name="GroupName" Type="String" />
+                        <asp:Parameter Name="ModifiedDate" Type="DateTime" />
+                    </InsertParameters>
+                    <UpdateParameters>
+                        <asp:Parameter Name="Name" Type="String" />
+                        <asp:Parameter Name="GroupName" Type="String" />
+                        <asp:Parameter Name="ModifiedDate" Type="DateTime" />
+                        <asp:Parameter Name="original_DepartmentID" Type="Int16" />
+                    </UpdateParameters>
+                </asp:SqlDataSource>
+            </h2>
             <p>
                 You can easily find a web hosting company that offers the right mix of features and price for your applications.
             </p>
