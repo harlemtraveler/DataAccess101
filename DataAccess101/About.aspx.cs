@@ -14,31 +14,37 @@ namespace DataAccess101
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            using (SqlConnection con = new SqlConnection())
+            using (IDbConnection con = new SqlConnection())
             {
                 con.ConnectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString;
                 using (SqlCommand cmd = new SqlCommand())
                 {
-                    cmd.Connection = con;
-                    cmd.CommandText = "Select * from HumanResources.Department";
+                    cmd.Connection = (SqlConnection)con;
+                    cmd.CommandText = "Select * from HumanResources.Department where DepartmentID = @ID";
+                    //cmd.Parameters.Add(new SqlParameter("@ID", 4));
+                    SqlParameter param = new SqlParameter();
+                    param.ParameterName = "@ID";
+                    param.Value = 4;
+                    cmd.Parameters.Add(param);
                     cmd.CommandType = System.Data.CommandType.Text;
-                    //con.Open();
-                    //using (SqlDataReader reader = cmd.ExecuteReader())
-                    //{
-                    //    if (reader.Read())
-                    //    {
-                    //        TextBox1.Text = TextBox1.Text + reader.GetValue(0);
-                    //        TextBox2.Text = TextBox2.Text + reader.GetValue(1);
-                    //    }
-                    //}
-                    using (SqlDataAdapter adapter = new SqlDataAdapter())
+                    con.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        adapter.SelectCommand = cmd;
-                        DataSet ds = new DataSet();
-                        adapter.Fill(ds);
-                        GridView1.DataSource = ds.Tables[0];
-                        GridView1.DataBind();
+                        //GridView1.DataSource = reader;
+                        while (reader.Read())
+                        {
+                            TextBox1.Text = TextBox1.Text + reader["Name"];
+                            TextBox2.Text = TextBox2.Text + reader["GroupName"];
+                        }
                     }
+                    //using (SqlDataAdapter adapter = new SqlDataAdapter())
+                    //{
+                    //    adapter.SelectCommand = cmd;
+                    //    DataSet ds = new DataSet();
+                    //    adapter.Fill(ds);
+                    //    GridView1.DataSource = ds.Tables[0];
+                    //    GridView1.DataBind();
+                    //}
                 }
             }
         }
