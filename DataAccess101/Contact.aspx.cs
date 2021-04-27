@@ -11,6 +11,10 @@ namespace DataAccess101
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            AdventureWorks2019Entities context = new AdventureWorks2019Entities();
+            var results = context.Departments.ToList();
+            GridView1.DataSource = results;
+            GridView1.DataBind();
 
         }
     }
